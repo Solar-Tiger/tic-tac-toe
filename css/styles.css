@@ -1,0 +1,84 @@
+:root {
+  --primary-color: rgb(36, 150, 226);
+
+  --card-border-radius: 10px;
+
+  --library-header: 100px;
+  --library-footer: 2rem;
+  --library-aside: 5rem;
+  --library-main: calc(100vh - (var(--library-header) + var(--library-footer)));
+  --library-cataglog-scroll: calc(
+    100vh -
+      (var(--library-header) + var(--library-footer) + var(--library-aside))
+  );
+}
+
+/*  
+   ========================================================================= 
+   =                         KEVIN POWELL CSS RESET                        =   
+   =========================================================================  
+   */
+
+/*  Source: https://www.youtube.com/shorts/2lyDv0wOQuQ */
+
+/* makes sizing simpler */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* remove default spacing */
+* :not(dialog) {
+  margin: 0;
+  padding: 0;
+}
+
+/* dark mode user-agent-styles */
+/* html {
+ color-scheme: dark light;
+  } */
+
+body {
+  min-height: 100vh;
+  background: #eee;
+}
+
+html {
+  font-family: var(--dawntreader-header);
+  /* font-size: 1.125rem; */
+}
+
+/* responsive images/videos */
+img:not(.dashboard-icon),
+picture,
+/* svg, */
+video {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+select,
+input {
+  font-size: inherit;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Acme', Arial, Helvetica, sans-serif;
+}
+
+p,
+a,
+button {
+  font-family: 'Exo', Arial, Helvetica, sans-serif;
+}
+
+/*  
+   ========================================================================= 
+   =                              TIC TAC TOE                              =   
+   =========================================================================  
+   */
