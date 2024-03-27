@@ -1,28 +1,31 @@
 function TicTacToe() {
-  const ticTacToeBoard = [];
-  const boardSize = 3;
+  const gameBoard = {
+    board: [],
+    size: 3,
+  };
 
   function createNewBoard() {
     let number = 0;
-    for (let i = 0; i < boardSize; i++) {
-      ticTacToeBoard[i] = [];
-      for (let j = 0; j < boardSize; j++) {
-        ticTacToeBoard[i].push(number);
+    for (let i = 0; i < gameBoard.size; i++) {
+      gameBoard.board[i] = [];
+      for (let j = 0; j < gameBoard.size; j++) {
+        gameBoard.board[i].push(number);
         number += 1;
       }
     }
-    console.log(ticTacToeBoard);
+    console.log(gameBoard.board);
   }
 
   createNewBoard();
 
-  const displayBoard = () => console.log(ticTacToeBoard);
+  const displayBoard = () => console.log(gameBoard.board);
+
   function playerMove(position, shape) {
     let number = 0;
-    for (let i = 0; i < boardSize; i++) {
-      for (let j = 0; j < boardSize; j++) {
+    for (let i = 0; i < gameBoard.size; i++) {
+      for (let j = 0; j < gameBoard.size; j++) {
         if (number === position) {
-          ticTacToeBoard[i][j] = shape;
+          gameBoard.board[i][j] = shape;
         }
         number += 1;
       }
