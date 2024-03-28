@@ -36,11 +36,13 @@ function TicTacToe() {
       for (let j = 0; j < gameBoard.size; j++) {
         if (number === position) {
           gameBoard.board[i][j] = shape;
+          displayBoard();
+          return;
         }
         number += 1;
       }
     }
-    displayBoard();
+    // displayBoard();
   }
 
   return { displayBoard, playerMove, createNewBoard };
