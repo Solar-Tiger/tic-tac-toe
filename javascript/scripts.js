@@ -10,6 +10,12 @@ function TicTacToe() {
   // Function to display the game board in the console
   const displayBoard = () => console.log(gameBoard.board);
 
+  const changeBoardSize = (boardSize) => {
+    gameBoard.size = boardSize;
+
+    return gameBoard.size;
+  };
+
   // Creates a fresh game board based on the size in the gameBoard object
   function createNewBoard() {
     // Controls what spaces are available
@@ -42,6 +48,16 @@ function TicTacToe() {
             return true;
           }
           console.log('Already been played!');
+          displayBoard();
+          return false;
+        }
+        if (position < 0 || position > 8) {
+          console.log(
+            `Incorrect placement: please pick a number between 0 and ${
+              gameBoard.size * gameBoard.size - 1
+            }`
+          );
+          displayBoard();
           return false;
         }
         number += 1;
@@ -49,7 +65,7 @@ function TicTacToe() {
     }
   }
 
-  function checkWinner() {
+  function checkWinner(winningPlayer) {
     // Set a smaller variable for board size
     const boardSize = gameBoard.board;
 
@@ -82,25 +98,31 @@ function TicTacToe() {
 
       // If statements to check if the variables above match the length of the array they're compared against, meaning there was a winner if true
       if (row === boardSize[i].length) {
-        console.log(`${boardSize[i][0]} is the winner!`);
+        console.log(`${winningPlayer} is the winner!`);
         break;
       }
       if (col === boardSize[i].length) {
-        console.log(`${boardSize[0][i]} is the winner!`);
+        console.log(`${winningPlayer} is the winner!`);
         break;
       }
       if (topLeft === boardSize[i].length) {
-        console.log(`${boardSize[0][0]} is the winner!`);
+        console.log(`${winningPlayer} is the winner!`);
         break;
       }
       if (bottomLeft === boardSize[i].length) {
-        console.log(`${boardSize[boardSize[i].length - 1][0]} is the winner!`);
+        console.log(`${winningPlayer} is the winner!`);
         break;
       }
     }
   }
 
-  return { displayBoard, playerMove, createNewBoard, checkWinner };
+  return {
+    displayBoard,
+    playerMove,
+    createNewBoard,
+    checkWinner,
+    changeBoardSize,
+  };
 }
 
 // Function for playing Tic Tac Toe
@@ -110,10 +132,16 @@ function PlayTicTacToe() {
   let playerOneName = 'Player one';
   let playerTwoName = 'Player two';
 
+  let players = [
+    { name: playerOneName, shape: 'X' },
+    { name: playerTwoName, shape: 'O' },
+  ];
+
   function setUpPlayers() {
     const choosePlayerNames = prompt(
       'Would you like to name the players? Yes or No'
     );
+
     if (choosePlayerNames === null) {
       alert('Input cancelled, default names will be used.');
     } else if (
@@ -123,24 +151,26 @@ function PlayTicTacToe() {
       alert('Input invalid, default names will be used');
     } else if (choosePlayerNames.toLowerCase() === 'yes') {
       playerOneName = prompt("Enter Player one's name");
+
       if (playerOneName === null) {
         alert('Incorrect name, default name will be used.');
         playerOneName = 'Player one';
       }
+
       playerTwoName = prompt("Enter Player two's name");
+
       if (playerTwoName === null) {
         alert('Incorrect name, default name will be used.');
         playerTwoName = 'Player two';
       }
     }
+    players = [
+      { name: playerOneName, shape: 'X' },
+      { name: playerTwoName, shape: 'O' },
+    ];
   }
 
-  // setUpPlayers();
-
-  const players = [
-    { name: playerOneName, shape: 'X' },
-    { name: playerTwoName, shape: 'O' },
-  ];
+  setUpPlayers();
 
   let currentPlayer = players[0];
 
@@ -157,23 +187,30 @@ function PlayTicTacToe() {
 
   function playRound(placement) {
     const placedMarker = board.playerMove(placement, currentPlayer.shape);
-    if (placedMarker && placement >= 0 && placement <= 8) {
+
+    if (
+      placedMarker &&
+      placement >= 0 &&
+      placement <= board.changeBoardSize * board.changeBoardSize - 1
+    ) {
       console.log(
         `${currentPlayer.name} places their marker ${currentPlayer.shape} at ${placement}`
       );
 
+      board.checkWinner(currentPlayer.name);
       getCurrentPlayer();
-      board.checkWinner();
-    } else {
-      console.log(`Incorrect placement, ${currentPlayer.name}`);
+      console.log(`It's ${currentPlayer.name}'s turn now!`);
     }
   }
 
   function newGame() {
     board.createNewBoard();
+    setUpPlayers();
+    currentPlayer = players[0];
     console.log(`A new game has been declared!`);
+    console.log(`It's ${currentPlayer.name}'s turn!`);
   }
-  return { playRound, showCurrentPlayer, newGame, setUpPlayers };
+  return { playRound, showCurrentPlayer, newGame };
 }
 
 const game = PlayTicTacToe();
