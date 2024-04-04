@@ -7,14 +7,31 @@ function TicTacToe() {
     size: 3,
   };
 
+  const changeBoardSize = () => {
+    let newBoardSize = prompt('What size is the board?');
+
+    if (
+      newBoardSize === null ||
+      newBoardSize === '' ||
+      isNaN(newBoardSize) ||
+      newBoardSize < 3 ||
+      newBoardSize > 7
+    ) {
+      alert('No size/incorrect size, using default of 3');
+
+      gameBoard.size = 3;
+      return;
+    }
+
+    gameBoard.size = parseInt(newBoardSize);
+  };
+
+  changeBoardSize();
+
   // Function to display the game board in the console
   const displayBoard = () => console.log(gameBoard.board);
 
-  const changeBoardSize = (boardSize) => {
-    gameBoard.size = boardSize;
-
-    return gameBoard.size;
-  };
+  const getCurrentBoardSize = () => gameBoard.size;
 
   // Creates a fresh game board based on the size in the gameBoard object
   function createNewBoard() {
@@ -42,7 +59,7 @@ function TicTacToe() {
     for (let i = 0; i < gameBoard.size; i++) {
       for (let j = 0; j < gameBoard.size; j++) {
         if (number === position) {
-          if (typeof gameBoard.board[i][j] === 'number') {
+          if (!isNaN(gameBoard.board[i][j])) {
             gameBoard.board[i][j] = shape;
             displayBoard();
             return true;
@@ -51,9 +68,13 @@ function TicTacToe() {
           displayBoard();
           return false;
         }
-        if (position < 0 || position > 8) {
+        if (
+          position < 0 ||
+          position > gameBoard.size * gameBoard.size - 1 ||
+          isNaN(position)
+        ) {
           console.log(
-            `Incorrect placement: please pick a number between 0 and ${
+            `Incorrect placement/input: please pick a number between 0 and ${
               gameBoard.size * gameBoard.size - 1
             }`
           );
@@ -77,7 +98,7 @@ function TicTacToe() {
       let topLeft = 0;
       let bottomLeft = 0;
 
-      // For loop to loop through each inner array, adding to the variables above if a match is found
+      // For loop to loop through each inner array, adding to the variables above if a match is found till it finds 'n' in a row
       for (let j = 0; j < boardSize[i].length; j++) {
         if (boardSize[i][0] === boardSize[i][j]) {
           row += 1;
@@ -99,19 +120,19 @@ function TicTacToe() {
       // If statements to check if the variables above match the length of the array they're compared against, meaning there was a winner if true
       if (row === boardSize[i].length) {
         console.log(`${winningPlayer} is the winner!`);
-        break;
+        return true;
       }
       if (col === boardSize[i].length) {
         console.log(`${winningPlayer} is the winner!`);
-        break;
+        return true;
       }
       if (topLeft === boardSize[i].length) {
         console.log(`${winningPlayer} is the winner!`);
-        break;
+        return true;
       }
       if (bottomLeft === boardSize[i].length) {
         console.log(`${winningPlayer} is the winner!`);
-        break;
+        return true;
       }
     }
   }
@@ -122,12 +143,14 @@ function TicTacToe() {
     createNewBoard,
     checkWinner,
     changeBoardSize,
+    getCurrentBoardSize,
   };
 }
 
 // Function for playing Tic Tac Toe
 function PlayTicTacToe() {
   const board = TicTacToe();
+  let currentBoardSize = board.getCurrentBoardSize();
 
   let playerOneName = 'Player one';
   let playerTwoName = 'Player two';
@@ -191,7 +214,7 @@ function PlayTicTacToe() {
     if (
       placedMarker &&
       placement >= 0 &&
-      placement <= board.changeBoardSize * board.changeBoardSize - 1
+      placement <= currentBoardSize * currentBoardSize - 1
     ) {
       console.log(
         `${currentPlayer.name} places their marker ${currentPlayer.shape} at ${placement}`
@@ -204,6 +227,8 @@ function PlayTicTacToe() {
   }
 
   function newGame() {
+    board.changeBoardSize();
+    currentBoardSize = board.getCurrentBoardSize();
     board.createNewBoard();
     setUpPlayers();
     currentPlayer = players[0];
