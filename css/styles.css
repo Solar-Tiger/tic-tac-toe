@@ -3,14 +3,7 @@
 
   --card-border-radius: 10px;
 
-  --library-header: 100px;
-  --library-footer: 2rem;
-  --library-aside: 5rem;
-  --library-main: calc(100vh - (var(--library-header) + var(--library-footer)));
-  --library-cataglog-scroll: calc(
-    100vh -
-      (var(--library-header) + var(--library-footer) + var(--library-aside))
-  );
+  --tic-tac-toe-border-color: 2px solid black;
 }
 
 /*  
@@ -86,7 +79,6 @@ button {
 .tic-tac-toe-container {
   max-width: 720px;
   margin-inline: auto;
-  border: 2px solid black;
 }
 
 .tic-tac-toe-grid {
@@ -94,16 +86,18 @@ button {
   grid-template-columns: repeat(3, 1fr);
   justify-items: center;
   margin-top: 5vh;
+  border: var(--tic-tac-toe-border-color);
 }
 
-.test {
+.square {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid black;
+  padding: 20px;
   width: 100%;
   height: 100%;
   aspect-ratio: 1/1;
+  border: var(--tic-tac-toe-border-color);
 }
 
 .tic-tac-toe-game-controls {
