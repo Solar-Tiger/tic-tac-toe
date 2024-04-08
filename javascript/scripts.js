@@ -7,27 +7,6 @@ function TicTacToe() {
     size: 3,
   };
 
-  const changeBoardSize = () => {
-    let newBoardSize = prompt('What size is the board?');
-
-    if (
-      newBoardSize === null ||
-      newBoardSize === '' ||
-      isNaN(newBoardSize) ||
-      newBoardSize < 3 ||
-      newBoardSize > 7
-    ) {
-      alert('No size/incorrect size, using default of 3');
-
-      gameBoard.size = 3;
-      return;
-    }
-
-    gameBoard.size = parseInt(newBoardSize);
-  };
-
-  changeBoardSize();
-
   // Function to display the game board in the console
   const displayBoard = () => console.log(gameBoard.board);
 
@@ -50,6 +29,27 @@ function TicTacToe() {
   }
 
   createNewBoard();
+
+  const changeBoardSize = () => {
+    let newBoardSize = prompt('What size is the board?');
+
+    if (
+      newBoardSize === null ||
+      newBoardSize === '' ||
+      isNaN(newBoardSize) ||
+      newBoardSize < 3 ||
+      newBoardSize > 7
+    ) {
+      alert('No size/incorrect size, using default of 3');
+
+      gameBoard.size = 3;
+      return;
+    }
+
+    gameBoard.size = parseInt(newBoardSize);
+  };
+
+  changeBoardSize();
 
   // Controls which position and shape is applied to the respective position on the console game board and updates with that information accordingly
   function playerMove(position, shape) {
@@ -256,3 +256,40 @@ function PlayTicTacToe() {
 }
 
 // const game = PlayTicTacToe();
+
+const ticTacToeGrid = document.querySelector('[data-tic-tac-toe-grid]');
+const reset = document.querySelector('[data-reset-game]');
+
+function displayBoard(userBoardSize) {
+  let defaultBoardSize = userBoardSize;
+
+  if (defaultBoardSize < 3 || defaultBoardSize > 5 || isNaN(defaultBoardSize)) {
+    defaultBoardSize = 3;
+  }
+
+  const size = defaultBoardSize * defaultBoardSize;
+
+  ticTacToeGrid.style.setProperty('--board-size', defaultBoardSize);
+
+  for (let i = 0; i < size; i++) {
+    const boardSquare = document.createElement('div');
+
+    boardSquare.classList.add('square');
+    boardSquare.dataset.index = i;
+    boardSquare.addEventListener('click', (e) => {
+      console.log(e.target);
+    });
+
+    ticTacToeGrid.appendChild(boardSquare);
+  }
+}
+
+displayBoard(3);
+
+reset.addEventListener('click', () => {
+  while (ticTacToeGrid.lastElementChild) {
+    ticTacToeGrid.removeChild(ticTacToeGrid.lastElementChild);
+  }
+
+  displayBoard(4);
+});
