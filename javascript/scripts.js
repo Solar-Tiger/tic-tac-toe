@@ -1,6 +1,8 @@
 /* eslint-disable no-alert */
 /* eslint-disable prefer-const */
 function TicTacToe() {
+  const ticTacToeGrid = document.querySelector('[data-tic-tac-toe-grid]');
+
   // Where the game board and everything related to how it functions (like size) resides
   const gameBoard = {
     board: [],
@@ -16,12 +18,25 @@ function TicTacToe() {
   function createNewBoard() {
     // Controls what spaces are available
     let availableSpaces = 0;
+    ticTacToeGrid.style.setProperty('--board-size', gameBoard.size);
 
     // Creates the game board display and logs it in the console
     for (let i = 0; i < gameBoard.size; i++) {
       gameBoard.board[i] = [];
       for (let j = 0; j < gameBoard.size; j++) {
+        const boardSquare = document.createElement('div');
+
+        boardSquare.classList.add('square');
+        boardSquare.dataset.index = availableSpaces;
+
+        boardSquare.addEventListener('click', (e) => {
+          console.log(e.target);
+        });
+
+        ticTacToeGrid.appendChild(boardSquare);
+
         gameBoard.board[i].push(availableSpaces);
+
         availableSpaces += 1;
       }
     }
@@ -49,7 +64,7 @@ function TicTacToe() {
     gameBoard.size = parseInt(newBoardSize);
   };
 
-  changeBoardSize();
+  //   changeBoardSize();
 
   // Controls which position and shape is applied to the respective position on the console game board and updates with that information accordingly
   function playerMove(position, shape) {
@@ -200,7 +215,7 @@ function PlayTicTacToe() {
     ];
   }
 
-  setUpPlayers();
+  //   setUpPlayers();
 
   let currentPlayer = players[0];
 
@@ -255,41 +270,4 @@ function PlayTicTacToe() {
   return { playRound, showCurrentPlayer, newGame };
 }
 
-// const game = PlayTicTacToe();
-
-const ticTacToeGrid = document.querySelector('[data-tic-tac-toe-grid]');
-const reset = document.querySelector('[data-reset-game]');
-
-function displayBoard(userBoardSize) {
-  let defaultBoardSize = userBoardSize;
-
-  if (defaultBoardSize < 3 || defaultBoardSize > 5 || isNaN(defaultBoardSize)) {
-    defaultBoardSize = 3;
-  }
-
-  const size = defaultBoardSize * defaultBoardSize;
-
-  ticTacToeGrid.style.setProperty('--board-size', defaultBoardSize);
-
-  for (let i = 0; i < size; i++) {
-    const boardSquare = document.createElement('div');
-
-    boardSquare.classList.add('square');
-    boardSquare.dataset.index = i;
-    boardSquare.addEventListener('click', (e) => {
-      console.log(e.target);
-    });
-
-    ticTacToeGrid.appendChild(boardSquare);
-  }
-}
-
-displayBoard(3);
-
-reset.addEventListener('click', () => {
-  while (ticTacToeGrid.lastElementChild) {
-    ticTacToeGrid.removeChild(ticTacToeGrid.lastElementChild);
-  }
-
-  displayBoard(4);
-});
+const game = PlayTicTacToe();
