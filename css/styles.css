@@ -79,11 +79,13 @@ button {
 .tic-tac-toe-container {
   max-width: 720px;
   margin-inline: auto;
+  padding: 0 20px;
 }
 
 .tic-tac-toe-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(var(--board-size), 1fr);
+  grid-template-rows: repeat(var(--board-size), 1fr);
   justify-items: center;
   margin-top: 5vh;
   border: var(--tic-tac-toe-border-color);
