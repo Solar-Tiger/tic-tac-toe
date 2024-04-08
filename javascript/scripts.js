@@ -15,7 +15,7 @@ function TicTacToe() {
   const getCurrentBoardSize = () => gameBoard.size;
 
   // Creates a fresh game board based on the size in the gameBoard object
-  function createNewBoard() {
+  const createNewBoard = () => {
     // Controls what spaces are available
     let availableSpaces = 0;
     ticTacToeGrid.style.setProperty('--board-size', gameBoard.size);
@@ -41,9 +41,35 @@ function TicTacToe() {
       }
     }
     displayBoard();
-  }
+  };
 
   createNewBoard();
+
+  const startNewGame = (userBoardSize) => {
+    let defaultBoardSize = userBoardSize;
+
+    if (
+      defaultBoardSize < 3 ||
+      defaultBoardSize > 5 ||
+      isNaN(defaultBoardSize)
+    ) {
+      defaultBoardSize = 3;
+    }
+
+    const size = defaultBoardSize * defaultBoardSize;
+
+    ticTacToeGrid.style.setProperty('--board-size', defaultBoardSize);
+
+    for (let i = 0; i < size; i++) {
+      const boardSquare = document.createElement('div');
+      boardSquare.classList.add('square');
+      boardSquare.dataset.index = i;
+      boardSquare.addEventListener('click', (e) => {
+        console.log(e.target);
+      });
+      ticTacToeGrid.appendChild(boardSquare);
+    }
+  };
 
   const changeBoardSize = () => {
     let newBoardSize = prompt('What size is the board?');
