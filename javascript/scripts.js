@@ -87,27 +87,6 @@ function TicTacToe() {
     newGameOptions.close();
   });
 
-  const changeBoardSize = () => {
-    let newBoardSize = prompt('What size is the board?');
-
-    if (
-      newBoardSize === null ||
-      newBoardSize === '' ||
-      isNaN(newBoardSize) ||
-      newBoardSize < 3 ||
-      newBoardSize > 7
-    ) {
-      alert('No size/incorrect size, using default of 3');
-
-      gameBoard.size = 3;
-      return;
-    }
-
-    gameBoard.size = parseInt(newBoardSize);
-  };
-
-  //   changeBoardSize();
-
   // Controls which position and shape is applied to the respective position on the console game board and updates with that information accordingly
   function playerMove(position, shape) {
     let number = 0;
@@ -203,7 +182,6 @@ function TicTacToe() {
     playerMove,
     createNewBoard,
     checkWinner,
-    changeBoardSize,
     getCurrentBoardSize,
   };
 }
