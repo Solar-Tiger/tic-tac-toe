@@ -37,7 +37,7 @@ function TicTacToe() {
     // Sets a custom property to the gameboard to control its size via user input
     ticTacToeGrid.style.setProperty('--board-size', gameBoard.size);
 
-    // Creates the game board display and logs it in the console
+    // Creates the game board display in the DOM and logs it in the console
     for (let i = 0; i < gameBoard.size; i++) {
       gameBoard.board[i] = [];
       for (let j = 0; j < gameBoard.size; j++) {
@@ -47,10 +47,6 @@ function TicTacToe() {
 
         boardSquare.classList.add('board-square');
         boardSquare.dataset.index = gameBoard.board[i][j];
-
-        boardSquare.addEventListener('click', (e) => {
-          console.log(e.target);
-        });
 
         ticTacToeGrid.appendChild(boardSquare);
 
@@ -62,42 +58,28 @@ function TicTacToe() {
 
   createNewBoard();
 
-  const newGame = document.querySelector('[data-new-game]');
-  const newGameOptions = document.querySelector('[data-new-game-options]');
-  const startNewGame = document.querySelector('[data-start-new-game]');
-  const cancelNewGame = document.querySelector('[data-cancel-new-game]');
-  const ticTacToeForm = document.querySelector('[data-tic-tac-toe-form]');
-
-  newGame.addEventListener('click', () => {
-    newGameOptions.showModal();
-  });
-
-  startNewGame.addEventListener('click', (e) => {
-    e.preventDefault();
-
-    if (ticTacToeForm.checkValidity()) {
-      createNewBoard();
-      newGameOptions.close();
-    } else {
-      ticTacToeForm.reportValidity();
-    }
-  });
-
-  cancelNewGame.addEventListener('click', () => {
-    newGameOptions.close();
-  });
-
   // Controls which position and shape is applied to the respective position on the console game board and updates with that information accordingly
-  function playerMove(position, shape) {
+  function playerMove(position, shape, boardPosition) {
     let number = 0;
 
-    // Updates the game board with the players shapes and retains the shape in subsquent plays if a position isn't played twice then updates and displays the new game board in the console with appropiate shape. Will implement logic later for duplicate plays.
+    // Updates the game board with the players shapes and retains the shape in subsquent plays if a position isn't played twice then updates and displays the new game board in the console with appropiate shape.
     for (let i = 0; i < gameBoard.size; i++) {
       for (let j = 0; j < gameBoard.size; j++) {
-        if (number === position) {
+        if (number === parseInt(position)) {
           if (!isNaN(gameBoard.board[i][j])) {
             gameBoard.board[i][j] = shape;
             displayBoard();
+
+            const playerShape = document.createElement('img');
+
+            if (shape === 'X') {
+              playerShape.src = 'svgs/x-symbol-svgrepo-com.svg';
+            } else if (shape === 'O') {
+              playerShape.src = 'svgs/circle-outline-svgrepo-com.svg';
+            }
+
+            boardPosition.appendChild(playerShape);
+
             return true;
           }
           console.log('Already been played!');
@@ -175,6 +157,7 @@ function TicTacToe() {
         return true;
       }
     }
+    return false;
   }
 
   return {
@@ -250,12 +233,28 @@ function PlayTicTacToe() {
     console.log(`It's currently ${currentPlayer.name}'s turn!`);
   }
 
-  function playRound(placement) {
+  function playerClickedSquare() {
+    const squares = document.querySelectorAll('[data-index]');
+
+    squares.forEach((square) => {
+      square.addEventListener('click', () => {
+        playRound(square.dataset.index, square);
+      });
+    });
+  }
+
+  playerClickedSquare();
+
+  function playRound(placement, currentSquare) {
     if (
-      roundsPlayed !== currentBoardSize * currentBoardSize ||
+      roundsPlayed !== currentBoardSize * currentBoardSize &&
       victor !== true
     ) {
-      const placedMarker = board.playerMove(placement, currentPlayer.shape);
+      const placedMarker = board.playerMove(
+        placement,
+        currentPlayer.shape,
+        currentSquare
+      );
 
       if (
         placedMarker &&
@@ -267,26 +266,61 @@ function PlayTicTacToe() {
         );
 
         victor = board.checkWinner(currentPlayer.name, roundsPlayed);
-        console.log(victor);
-        roundsPlayed += 1;
-        getCurrentPlayer();
-        console.log(`It's ${currentPlayer.name}'s turn now!`);
+
+        if (victor !== true) {
+          roundsPlayed += 1;
+          getCurrentPlayer();
+          console.log(`It's ${currentPlayer.name}'s turn now!`);
+        }
       }
     } else {
       console.log("Game Over! Please use 'game.newGame()");
     }
   }
 
-  function newGame() {
-    board.changeBoardSize();
-    currentBoardSize = board.getCurrentBoardSize();
+  // Steps to start a fresh new game
+  function beginNewGame() {
     board.createNewBoard();
-    setUpPlayers();
+    currentBoardSize = board.getCurrentBoardSize();
+    playerClickedSquare();
     currentPlayer = players[0];
     roundsPlayed = 0;
+    victor = false;
     console.log(`A new game has been declared!`);
     console.log(`It's ${currentPlayer.name}'s turn!`);
   }
+
+  // DOM elements used to start a new game and adjust the game board size
+  const newGame = document.querySelector('[data-new-game]');
+  const newGameOptions = document.querySelector('[data-new-game-options]');
+  const startNewGame = document.querySelector('[data-start-new-game]');
+  const cancelNewGame = document.querySelector('[data-cancel-new-game]');
+  const resetGame = document.querySelector('[data-reset-game]');
+  const ticTacToeForm = document.querySelector('[data-tic-tac-toe-form]');
+
+  newGame.addEventListener('click', () => {
+    newGameOptions.showModal();
+  });
+
+  startNewGame.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    if (ticTacToeForm.checkValidity()) {
+      beginNewGame();
+      newGameOptions.close();
+    } else {
+      ticTacToeForm.reportValidity();
+    }
+  });
+
+  cancelNewGame.addEventListener('click', () => {
+    newGameOptions.close();
+  });
+
+  resetGame.addEventListener('click', () => {
+    beginNewGame();
+  });
+
   return { playRound, showCurrentPlayer, newGame };
 }
 
