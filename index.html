@@ -14,14 +14,45 @@
     </header>
 
     <main class="tic-tac-toe-container">
+        <div class="player-names">
+            <div class="player-one-name">
+                <p>Player One</p>
+                <p>Jeff</p>
+                <h3>X</h3>
+            </div>
+            <div class="player-one-name">
+                <p>Player Two</p>
+                <p>Kim</p>
+                <h3>O</h3>
+            </div>
+        </div>
         <div class="tic-tac-toe-grid" data-tic-tac-toe-grid>
             <!-- <div class="square square-0" data-index="0"><img src="svgs/x-symbol-svgrepo-com.svg" alt=""></div> -->
         </div>
 
         <div class="tic-tac-toe-game-controls">
             <button data-reset-game>Reset game</button>
-            <button>New game</button>
+            <button data-new-game>New game</button>
         </div>
+
+        <dialog data-new-game-options class="tic-tac-toe-dialog">
+            <form action="#" method="dialog" id="start-new-game" data-tic-tac-toe-form>
+                <div>
+                    <p>Player One Name: </p><input type="text" required data-player-one>
+                </div>
+                <div>
+                    <p>Player Two Name: </p><input type="text" required data-player-two>
+                </div>
+                <div>
+                    <p>Board size (3-5): </p><input type="number" min="3" max="5" required data-board-size>
+                </div>
+            </form>
+
+            <div class="tic-tac-toe-modal-buttons">
+                <button data-start-new-game form="start-new-game">Begin!</button>
+                <button data-cancel-new-game>Cancel</button>
+            </div>
+        </dialog>
     </main>
 
     <footer>
