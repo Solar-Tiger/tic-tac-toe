@@ -180,45 +180,23 @@ function PlayTicTacToe() {
   let playerOneName = 'Player one';
   let playerTwoName = 'Player two';
 
+  let playerOneNameInput = document.querySelector(
+    '[data-player-one-name]'
+  ).value;
+  let playerTwoNameInput = document.querySelector(
+    '[data-player-two-name]'
+  ).value;
+
+  function playerNames() {
+    if (playerOneNameInput === '') {
+      playerOneName = 'Player One';
+    }
+  }
+
   let players = [
     { name: playerOneName, shape: 'X' },
     { name: playerTwoName, shape: 'O' },
   ];
-
-  function setUpPlayers() {
-    const choosePlayerNames = prompt(
-      'Would you like to name the players? Yes or No'
-    );
-
-    if (choosePlayerNames === null) {
-      alert('Input cancelled, default names will be used.');
-    } else if (
-      choosePlayerNames.toLowerCase() === 'no' ||
-      choosePlayerNames.toLowerCase() !== 'yes'
-    ) {
-      alert('Input invalid, default names will be used');
-    } else if (choosePlayerNames.toLowerCase() === 'yes') {
-      playerOneName = prompt("Enter Player one's name");
-
-      if (playerOneName === null) {
-        alert('Incorrect name, default name will be used.');
-        playerOneName = 'Player one';
-      }
-
-      playerTwoName = prompt("Enter Player two's name");
-
-      if (playerTwoName === null) {
-        alert('Incorrect name, default name will be used.');
-        playerTwoName = 'Player two';
-      }
-    }
-    players = [
-      { name: playerOneName, shape: 'X' },
-      { name: playerTwoName, shape: 'O' },
-    ];
-  }
-
-  //   setUpPlayers();
 
   let currentPlayer = players[0];
 
@@ -320,6 +298,8 @@ function PlayTicTacToe() {
   resetGame.addEventListener('click', () => {
     beginNewGame();
   });
+
+  // window.onload = newGameOptions.showModal();
 
   return { playRound, showCurrentPlayer, newGame };
 }
