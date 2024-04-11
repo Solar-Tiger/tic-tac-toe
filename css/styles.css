@@ -77,8 +77,9 @@ button {
    */
 
 .tic-tac-toe-container {
-  max-width: 720px;
+  max-width: 360px;
   margin-inline: auto;
+  margin-top: 4vh;
   padding: 0 20px;
 }
 
@@ -87,11 +88,11 @@ button {
   grid-template-columns: repeat(var(--board-size), 1fr);
   grid-template-rows: repeat(var(--board-size), 1fr);
   justify-items: center;
-  margin-top: 5vh;
+  margin-top: 4vh;
   border: var(--tic-tac-toe-border-color);
 }
 
-.square {
+.board-square {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -113,4 +114,39 @@ button {
     min-width: 150px;
     padding: 5px;
   }
+}
+
+.tic-tac-toe-dialog > form {
+  display: grid;
+  min-height: 250px;
+  max-width: 300px;
+
+  & p {
+    padding-bottom: 5px;
+  }
+
+  & input {
+    padding: 4px;
+  }
+
+  & :last-child {
+    justify-self: center;
+  }
+}
+
+.tic-tac-toe-modal-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  & button {
+    padding: 5px 15px;
+    min-width: 150px;
+  }
+}
+
+.player-names {
+  display: flex;
+  justify-content: space-between;
 }
