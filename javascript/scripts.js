@@ -9,21 +9,17 @@ function TicTacToe() {
     size: 3,
   };
 
-  // Function to display the game board in the console
-  // TO BE REMOVED IN THE FUTURE
-  const displayBoard = () => console.log(gameBoard.board);
-
   // Rreturns current board size to determine rounds to be played for tied games
   const getCurrentBoardSize = () => gameBoard.size;
 
   // Creates a fresh game board based on the size in the gameBoard object and displays it to the DOM and console
   const createNewBoard = () => {
     // Get user input for board size
-    let defaultBoardSize = document.querySelector('[data-board-size]').value;
+    let userChosenBoardSize = document.querySelector('[data-board-size]').value;
 
-    // When starting a new game, update board size based on users choice else use the default gameBoard.size
-    if (defaultBoardSize) {
-      gameBoard.size = defaultBoardSize;
+    // When starting a new game, update board size based on users choice else use the default gameBoard.size of 3
+    if (userChosenBoardSize) {
+      gameBoard.size = userChosenBoardSize;
     }
 
     // When creating a new game this clears the board
@@ -31,13 +27,13 @@ function TicTacToe() {
       ticTacToeGrid.removeChild(ticTacToeGrid.lastElementChild);
     }
 
-    // Controls what spaces are available for the player to select from
+    // Controls what spaces are available for the player to select from as well as what are legal placements based on the number in each position of the array
     let availableSpaces = 0;
 
     // Sets a custom property to the gameboard to control its size via user input
     ticTacToeGrid.style.setProperty('--board-size', gameBoard.size);
 
-    // Creates the game board display in the DOM and logs it in the console
+    // Creates the game board display in the DOM
     for (let i = 0; i < gameBoard.size; i++) {
       gameBoard.board[i] = [];
       for (let j = 0; j < gameBoard.size; j++) {
@@ -53,7 +49,6 @@ function TicTacToe() {
         availableSpaces += 1;
       }
     }
-    displayBoard();
   };
 
   createNewBoard();
@@ -68,8 +63,6 @@ function TicTacToe() {
         if (number === parseInt(position)) {
           if (!isNaN(gameBoard.board[i][j])) {
             gameBoard.board[i][j] = shape;
-            displayBoard();
-
             const playerShape = document.createElement('img');
 
             if (shape === 'X') {
@@ -83,20 +76,6 @@ function TicTacToe() {
             return true;
           }
           console.log('Already been played!');
-          displayBoard();
-          return false;
-        }
-        if (
-          position < 0 ||
-          position > gameBoard.size * gameBoard.size - 1 ||
-          isNaN(position)
-        ) {
-          console.log(
-            `Incorrect placement/input: please pick a number between 0 and ${
-              gameBoard.size * gameBoard.size - 1
-            }`
-          );
-          displayBoard();
           return false;
         }
         number += 1;
@@ -161,7 +140,6 @@ function TicTacToe() {
   }
 
   return {
-    displayBoard,
     playerMove,
     createNewBoard,
     checkWinner,
@@ -202,7 +180,6 @@ function PlayTicTacToe() {
         tttNameDisplay.textContent = tttName;
         return tttName;
       }
-      tttName = tttNameInput.value;
       tttNameDisplay.textContent = tttNameInput.value;
       return tttNameInput.value;
     }
@@ -218,6 +195,7 @@ function PlayTicTacToe() {
       playerTwoNameDisplay
     );
 
+    // Handles players variable to control which player is currently active
     players = [
       { name: playerOneName, shape: 'X' },
       { name: playerTwoName, shape: 'O' },
@@ -327,7 +305,7 @@ function PlayTicTacToe() {
     beginNewGame();
   });
 
-  window.onload = newGameOptions.showModal();
+  // window.onload = newGameOptions.showModal();
 
   return { playRound, showCurrentPlayer, beginNewGame };
 }
