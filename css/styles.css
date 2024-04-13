@@ -7,10 +7,10 @@
 }
 
 /*  
-   ========================================================================= 
-   =                         KEVIN POWELL CSS RESET                        =   
-   =========================================================================  
-   */
+	   ========================================================================= 
+	   =                         KEVIN POWELL CSS RESET                       =   
+	   =========================================================================  
+	   */
 
 /*  Source: https://www.youtube.com/shorts/2lyDv0wOQuQ */
 
@@ -29,8 +29,8 @@
 
 /* dark mode user-agent-styles */
 /* html {
- color-scheme: dark light;
-  } */
+	 color-scheme: dark light;
+	  } */
 
 body {
   min-height: 100vh;
@@ -44,9 +44,9 @@ html {
 
 /* responsive images/videos */
 img:not(.dashboard-icon),
-picture,
-/* svg, */
-video {
+	picture,
+	/* svg, */
+	video {
   display: block;
   max-width: 100%;
 }
@@ -71,15 +71,19 @@ button {
 }
 
 /*  
-   ========================================================================= 
-   =                             TIC TAC TOE                               =   
-   =========================================================================  
-   */
+	   ========================================================================= 
+	   =                             TIC TAC TOE                              =   
+	   =========================================================================  
+	   */
+
+h1 {
+  padding: 2vh 0;
+  text-align: center;
+}
 
 .tic-tac-toe-container {
   max-width: 360px;
   margin-inline: auto;
-  margin-top: 4vh;
   padding: 0 20px;
 }
 
@@ -146,7 +150,11 @@ button {
   }
 }
 
-.player-names {
+.player-info {
   display: flex;
   justify-content: space-between;
+
+  & div *:not(:last-child) {
+    margin-bottom: 0.5rem;
+  }
 }
