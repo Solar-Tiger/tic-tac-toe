@@ -84,12 +84,12 @@ function TicTacToe() {
   }
 
   function checkWinner(winningPlayer, tiedGame) {
-    // Set a smaller variable for board size
+    // Sets a better name to check each board position to check how many X's or O's are along each row, column or diagonal
     const boardPosition = gameBoard.board;
 
     // Loop through entire board regardless of size
     for (let i = 0; i < boardPosition.length; i++) {
-      // Variables used for checking to make sure there's "X" number in a row in any direction to be compared against the array length
+      // Variables used for checking to make sure there's any shape n number of times in a row in any direction to be compared against the arrays length
       let row = 0;
       let col = 0;
       let topLeft = 0;
@@ -115,22 +115,16 @@ function TicTacToe() {
       }
 
       // If statements to check if the variables above match the length of the array they're compared against, meaning there was a winner if true
-      if (row === boardPosition[i].length) {
+      if (
+        row === boardPosition[i].length ||
+        col === boardPosition[i].length ||
+        topLeft === boardPosition[i].length ||
+        bottomLeft === boardPosition[i].length
+      ) {
         console.log(`${winningPlayer} is the winner!`);
         return true;
       }
-      if (col === boardPosition[i].length) {
-        console.log(`${winningPlayer} is the winner!`);
-        return true;
-      }
-      if (topLeft === boardPosition[i].length) {
-        console.log(`${winningPlayer} is the winner!`);
-        return true;
-      }
-      if (bottomLeft === boardPosition[i].length) {
-        console.log(`${winningPlayer} is the winner!`);
-        return true;
-      }
+
       if (tiedGame === gameBoard.size * gameBoard.size - 1) {
         console.log("It's a tied game!");
         return true;
