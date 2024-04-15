@@ -61,7 +61,7 @@ function TicTacToe() {
   createNewBoard();
 
   // Controls which position and shape is applied to the respective position on the console game board and updates with that information accordingly
-  function playerMove(position, shape, boardPosition) {
+  function playerMove(position, shape, playerName, boardPosition) {
     let number = 0;
 
     // Updates the game board with the players shapes and retains the shape in subsquent plays if a position isn't played twice then updates and displays the new game board in the console with appropiate shape.
@@ -82,7 +82,7 @@ function TicTacToe() {
 
             return true;
           }
-          displayUserInfo('Already been played!');
+          displayUserInfo(`Already been played! Pick again, ${playerName}`);
           return false;
         }
         number += 1;
@@ -242,6 +242,7 @@ function TicTacToe() {
       const placedMarker = board.playerMove(
         placement,
         currentPlayer.shape,
+        currentPlayer.name,
         currentSquare
       );
 
