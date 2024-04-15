@@ -257,12 +257,16 @@ function TicTacToe() {
           roundsPlayed += 1;
           getCurrentPlayer();
           board.displayUserInfo(`It's ${currentPlayer.name}'s turn now!`);
+        } else if (roundsPlayed === boardSize - 1) {
+          board.displayUserInfo("It's a tied game!");
         } else {
           board.displayUserInfo(
             `${currentPlayer.name} is the winner! Game Over!`
           );
         }
       }
+    } else if (roundsPlayed === boardSize - 1) {
+      board.displayUserInfo("It's a tied game!");
     } else {
       board.displayUserInfo(`${currentPlayer.name} is the winner! Game Over!`);
     }
@@ -313,7 +317,7 @@ function TicTacToe() {
     beginNewGame();
   });
 
-  window.onload = newGameOptions.showModal();
+  // window.onload = newGameOptions.showModal();
 
   // return { playRound, beginNewGame };
 })();
