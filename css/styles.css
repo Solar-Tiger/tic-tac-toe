@@ -92,7 +92,6 @@ h1 {
   grid-template-columns: repeat(var(--board-size), 1fr);
   grid-template-rows: repeat(var(--board-size), 1fr);
   justify-items: center;
-  margin-top: 4vh;
   border: var(--tic-tac-toe-border-color);
 }
 
@@ -157,4 +156,9 @@ h1 {
   & div *:not(:last-child) {
     margin-bottom: 0.5rem;
   }
+}
+
+.tic-tac-toe-user-info {
+  text-align: center;
+  margin: 10px 0;
 }
