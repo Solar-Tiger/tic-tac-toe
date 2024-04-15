@@ -2,11 +2,18 @@
 /* eslint-disable prefer-const */
 function TicTacToe() {
   const ticTacToeGrid = document.querySelector('[data-tic-tac-toe-grid]');
+  const ticTacToeUserInfo = document.querySelector(
+    '[data-tic-tac-toe-user-info]'
+  );
 
   // Where the game board and everything related to how it functions (like size) resides
   const gameBoard = {
     board: [],
     size: 3,
+  };
+
+  const displayUserInfo = (info) => {
+    ticTacToeUserInfo.textContent = info;
   };
 
   // Rreturns current board size to determine rounds to be played for tied games
@@ -75,7 +82,7 @@ function TicTacToe() {
 
             return true;
           }
-          console.log('Already been played!');
+          displayUserInfo('Already been played!');
           return false;
         }
         number += 1;
@@ -121,12 +128,12 @@ function TicTacToe() {
         topLeft === boardPosition[i].length ||
         bottomLeft === boardPosition[i].length
       ) {
-        console.log(`${winningPlayer} is the winner!`);
+        displayUserInfo(`${winningPlayer} is the winner`);
         return true;
       }
 
       if (tiedGame === gameBoard.size * gameBoard.size - 1) {
-        console.log("It's a tied game!");
+        displayUserInfo("It's a tied game!");
         return true;
       }
     }
@@ -138,11 +145,12 @@ function TicTacToe() {
     createNewBoard,
     checkWinner,
     getCurrentBoardSize,
+    displayUserInfo,
   };
 }
 
 // Function for playing Tic Tac Toe
-function PlayTicTacToe() {
+(function PlayTicTacToe() {
   // Initializes the tic tac toe board
   const board = TicTacToe();
 
@@ -156,8 +164,12 @@ function PlayTicTacToe() {
   let players;
 
   // Used to get the input values and display them to the user in the DOM
-  let playerOneNameInput = document.querySelector('[data-player-one-name]');
-  let playerTwoNameInput = document.querySelector('[data-player-two-name]');
+  let playerOneNameInput = document.querySelector(
+    '[data-player-one-name-input]'
+  );
+  let playerTwoNameInput = document.querySelector(
+    '[data-player-two-name-input]'
+  );
 
   let playerOneNameDisplay = document.querySelector(
     '[data-player-one-name-display]'
@@ -201,16 +213,12 @@ function PlayTicTacToe() {
   // Sets the current player as Player 1 always
   let currentPlayer = players[0];
 
-  console.log(`It's ${currentPlayer.name}'s turn!`);
+  board.displayUserInfo(`It's ${currentPlayer.name}'s turn!`);
 
   // Updates current player by seeing who current player is and switching when that player makes a move
   function getCurrentPlayer() {
     currentPlayer =
       currentPlayer.name === players[0].name ? players[1] : players[0];
-  }
-
-  function showCurrentPlayer() {
-    console.log(`It's currently ${currentPlayer.name}'s turn!`);
   }
 
   // Sets the event listeners on each square regardless of board size on each new game/reset game
@@ -238,7 +246,7 @@ function PlayTicTacToe() {
       );
 
       if (placedMarker && placement >= 0 && placement <= boardSize - 1) {
-        console.log(
+        board.displayUserInfo(
           `${currentPlayer.name} places their marker ${currentPlayer.shape} at ${placement}`
         );
 
@@ -247,11 +255,15 @@ function PlayTicTacToe() {
         if (roundsPlayed !== boardSize && victor !== true) {
           roundsPlayed += 1;
           getCurrentPlayer();
-          console.log(`It's ${currentPlayer.name}'s turn now!`);
+          board.displayUserInfo(`It's ${currentPlayer.name}'s turn now!`);
+        } else {
+          board.displayUserInfo(
+            `${currentPlayer.name} is the winner! Game Over!`
+          );
         }
       }
     } else {
-      console.log("Game Over! Please use 'game.newGame()");
+      board.displayUserInfo(`${currentPlayer.name} is the winner! Game Over!`);
     }
   }
 
@@ -264,8 +276,9 @@ function PlayTicTacToe() {
     currentPlayer = players[0];
     roundsPlayed = 0;
     victor = false;
-    console.log(`A new game has been declared!`);
-    console.log(`It's ${currentPlayer.name}'s turn!`);
+    board.displayUserInfo(
+      `A new game begins! It's ${currentPlayer.name}'s turn!`
+    );
   }
 
   // DOM elements used to start a new game and adjust the game board size using user input and buttons
@@ -301,7 +314,5 @@ function PlayTicTacToe() {
 
   // window.onload = newGameOptions.showModal();
 
-  return { playRound, showCurrentPlayer, beginNewGame };
-}
-
-const game = PlayTicTacToe();
+  // return { playRound, beginNewGame };
+})();
