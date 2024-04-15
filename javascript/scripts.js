@@ -312,7 +312,7 @@ function TicTacToe() {
     beginNewGame();
   });
 
-  // window.onload = newGameOptions.showModal();
+  window.onload = newGameOptions.showModal();
 
   // return { playRound, beginNewGame };
 })();
