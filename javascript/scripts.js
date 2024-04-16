@@ -16,9 +16,6 @@ function TicTacToe() {
     ticTacToeUserInfo.textContent = info;
   };
 
-  // Rreturns current board size to determine rounds to be played for tied games
-  const getCurrentBoardSize = () => gameBoard.size;
-
   // Creates a fresh game board based on the size in the gameBoard object and displays it to the DOM and console
   const createNewBoard = () => {
     // Get user input for board size
@@ -96,7 +93,6 @@ function TicTacToe() {
 
     // Allow for checks on winner and tied games to run proper if statements
     let winner = false;
-    let tied = false;
 
     // Loop through entire board regardless of size
     for (let i = 0; i < boardPosition.length; i++) {
@@ -111,12 +107,15 @@ function TicTacToe() {
         if (boardPosition[i][0] === boardPosition[i][j]) {
           row += 1;
         }
+
         if (boardPosition[0][i] === boardPosition[j][i]) {
           col += 1;
         }
+
         if (boardPosition[0][0] === boardPosition[j][j]) {
           topLeft += 1;
         }
+
         if (
           boardPosition[boardPosition[j].length - 1][0] ===
           boardPosition[boardPosition[j].length - j - 1][j]
@@ -127,18 +126,6 @@ function TicTacToe() {
 
       // If statements to check if the variables above match the length of the array they're compared against, meaning there was a winner if true
       if (
-        parseInt(getCurrentBoardSize()) === 5 &&
-        (row === boardPosition[i].length - 1 ||
-          col === boardPosition[i].length - 1 ||
-          topLeft === boardPosition[i].length - 1 ||
-          bottomLeft === boardPosition[i].length - 1)
-      ) {
-        displayUserInfo(`${winningPlayer} is the winner!`);
-        winner = true;
-        return true;
-      }
-
-      if (
         row === boardPosition[i].length ||
         col === boardPosition[i].length ||
         topLeft === boardPosition[i].length ||
@@ -148,15 +135,11 @@ function TicTacToe() {
         winner = true;
         return true;
       }
-    }
 
-    if (tiedGame === gameBoard.size * gameBoard.size - 1) {
-      tied = true;
-    }
-
-    if (tied && !winner && tiedGame === gameBoard.size * gameBoard.size - 1) {
-      displayUserInfo("It's a tied game!");
-      return true;
+      if (!winner && tiedGame === gameBoard.size * gameBoard.size - 1) {
+        displayUserInfo("It's a tied game!");
+        return true;
+      }
     }
     return false;
   }
@@ -274,8 +257,6 @@ function TicTacToe() {
           roundsPlayed += 1;
           getCurrentPlayer();
           board.displayUserInfo(`It's ${currentPlayer.name}'s turn now!`);
-        } else {
-          board.checkWinner(currentPlayer.name, roundsPlayed);
         }
       }
     }
@@ -325,7 +306,7 @@ function TicTacToe() {
     beginNewGame();
   });
 
-  // window.onload = newGameOptions.showModal();
+  window.onload = newGameOptions.showModal();
 
   // return { playRound, beginNewGame };
 })();
