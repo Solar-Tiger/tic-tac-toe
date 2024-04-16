@@ -76,8 +76,11 @@ function TicTacToe() {
             }
 
             boardPosition.appendChild(playerShape);
+
+            return true;
           }
           displayUserInfo(`Already been played! Pick again, ${playerName}`);
+          return false;
         }
         number += 1;
       }
@@ -236,19 +239,21 @@ function TicTacToe() {
   // Handles playing of each round, checking to make sure moves are valid and placement is valid
   function playRound(placement, currentSquare) {
     if (!victor) {
-      board.playerMove(
+      const placedMarker = board.playerMove(
         placement,
         currentPlayer.shape,
         currentPlayer.name,
         currentSquare
       );
 
-      victor = board.checkWinner(currentPlayer.name, roundsPlayed);
+      if (placedMarker) {
+        victor = board.checkWinner(currentPlayer.name, roundsPlayed);
 
-      if (!victor) {
-        roundsPlayed += 1;
-        getCurrentPlayer();
-        board.displayUserInfo(`It's ${currentPlayer.name}'s turn now!`);
+        if (!victor) {
+          roundsPlayed += 1;
+          getCurrentPlayer();
+          board.displayUserInfo(`It's ${currentPlayer.name}'s turn now!`);
+        }
       }
     }
   }
