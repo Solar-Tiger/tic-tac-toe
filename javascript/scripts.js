@@ -19,8 +19,13 @@ function TicTacToe() {
   // Rreturns current board size to determine rounds to be played for tied games
   const getCurrentBoardSize = () => gameBoard.size;
 
+  // Stops the loop in checkWinner from executing after a a win, loss or tie
+  let gameOver;
+
   // Creates a fresh game board based on the size in the gameBoard object and displays it to the DOM and console
   const createNewBoard = () => {
+    gameOver = false;
+
     // Get user input for board size
     let userChosenBoardSize = document.querySelector('[data-board-size]').value;
 
@@ -94,6 +99,9 @@ function TicTacToe() {
     // Sets a better name to check each board position to check how many X's or O's are along each row, column or diagonal
     const boardPosition = gameBoard.board;
 
+    // Set winner to false to allow for check on tied games
+    let winner = false;
+
     // Loop through entire board regardless of size
     for (let i = 0; i < boardPosition.length; i++) {
       // Variables used for checking to make sure there's any shape n number of times in a row in any direction to be compared against the arrays length
@@ -102,40 +110,58 @@ function TicTacToe() {
       let topLeft = 0;
       let bottomLeft = 0;
 
-      // For loop to loop through each inner array, adding to the variables above if a match is found till it finds 'n' in a row
-      for (let j = 0; j < boardPosition[i].length; j++) {
-        if (boardPosition[i][0] === boardPosition[i][j]) {
-          row += 1;
-        }
-        if (boardPosition[0][i] === boardPosition[j][i]) {
-          col += 1;
-        }
-        if (boardPosition[0][0] === boardPosition[j][j]) {
-          topLeft += 1;
-        }
-        if (
-          boardPosition[boardPosition[j].length - 1][0] ===
-          boardPosition[boardPosition[j].length - j - 1][j]
-        ) {
-          bottomLeft += 1;
+      if (!gameOver) {
+        // For loop to loop through each inner array, adding to the variables above if a match is found till it finds 'n' in a row
+        for (let j = 0; j < boardPosition[i].length; j++) {
+          if (boardPosition[i][0] === boardPosition[i][j]) {
+            row += 1;
+          }
+          if (boardPosition[0][i] === boardPosition[j][i]) {
+            col += 1;
+          }
+          if (boardPosition[0][0] === boardPosition[j][j]) {
+            topLeft += 1;
+          }
+          if (
+            boardPosition[boardPosition[j].length - 1][0] ===
+            boardPosition[boardPosition[j].length - j - 1][j]
+          ) {
+            bottomLeft += 1;
+          }
         }
       }
 
       // If statements to check if the variables above match the length of the array they're compared against, meaning there was a winner if true
+      if (
+        parseInt(getCurrentBoardSize()) === 5 &&
+        (row === boardPosition[i].length - 1 ||
+          col === boardPosition[i].length - 1 ||
+          topLeft === boardPosition[i].length - 1 ||
+          bottomLeft === boardPosition[i].length - 1)
+      ) {
+        displayUserInfo(`${winningPlayer} is the winner!`);
+        winner = true;
+        gameOver = true;
+        return gameOver;
+      }
+
       if (
         row === boardPosition[i].length ||
         col === boardPosition[i].length ||
         topLeft === boardPosition[i].length ||
         bottomLeft === boardPosition[i].length
       ) {
-        displayUserInfo(`${winningPlayer} is the winner`);
-        return true;
+        displayUserInfo(`${winningPlayer} is the winner!`);
+        winner = true;
+        gameOver = true;
+        return gameOver;
       }
+    }
 
-      if (tiedGame === gameBoard.size * gameBoard.size - 1) {
-        displayUserInfo("It's a tied game!");
-        return true;
-      }
+    if (!winner && tiedGame === gameBoard.size * gameBoard.size - 1) {
+      displayUserInfo("It's a tied game!");
+      gameOver = true;
+      return gameOver;
     }
     return false;
   }
@@ -144,7 +170,6 @@ function TicTacToe() {
     playerMove,
     createNewBoard,
     checkWinner,
-    getCurrentBoardSize,
     displayUserInfo,
   };
 }
@@ -155,7 +180,6 @@ function TicTacToe() {
   const board = TicTacToe();
 
   // These values speak for themself except "players", which is used to keep track of player names and shapes
-  let currentBoardSize = board.getCurrentBoardSize();
   let roundsPlayed = 0;
   let victor = false;
 
@@ -236,9 +260,7 @@ function TicTacToe() {
 
   // Handles playing of each round, checking to make sure moves are valid and placement is valid
   function playRound(placement, currentSquare) {
-    const boardSize = currentBoardSize * currentBoardSize;
-
-    if (roundsPlayed !== boardSize && victor !== true) {
+    if (!victor) {
       const placedMarker = board.playerMove(
         placement,
         currentPlayer.shape,
@@ -246,36 +268,27 @@ function TicTacToe() {
         currentSquare
       );
 
-      if (placedMarker && placement >= 0 && placement <= boardSize - 1) {
+      if (placedMarker) {
         board.displayUserInfo(
           `${currentPlayer.name} places their marker ${currentPlayer.shape} at ${placement}`
         );
 
         victor = board.checkWinner(currentPlayer.name, roundsPlayed);
 
-        if (roundsPlayed !== boardSize && victor !== true) {
+        if (!victor) {
           roundsPlayed += 1;
           getCurrentPlayer();
           board.displayUserInfo(`It's ${currentPlayer.name}'s turn now!`);
-        } else if (roundsPlayed === boardSize - 1) {
-          board.displayUserInfo("It's a tied game!");
         } else {
-          board.displayUserInfo(
-            `${currentPlayer.name} is the winner! Game Over!`
-          );
+          board.checkWinner(currentPlayer.name, roundsPlayed);
         }
       }
-    } else if (roundsPlayed === boardSize - 1) {
-      board.displayUserInfo("It's a tied game!");
-    } else {
-      board.displayUserInfo(`${currentPlayer.name} is the winner! Game Over!`);
     }
   }
 
   // Steps to start a fresh new game
   function beginNewGame() {
     board.createNewBoard();
-    currentBoardSize = board.getCurrentBoardSize();
     playerClickedSquare();
     playerNames();
     currentPlayer = players[0];
