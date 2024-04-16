@@ -76,11 +76,8 @@ function TicTacToe() {
             }
 
             boardPosition.appendChild(playerShape);
-
-            return true;
           }
           displayUserInfo(`Already been played! Pick again, ${playerName}`);
-          return false;
         }
         number += 1;
       }
