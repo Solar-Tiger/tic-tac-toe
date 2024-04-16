@@ -239,25 +239,19 @@ function TicTacToe() {
   // Handles playing of each round, checking to make sure moves are valid and placement is valid
   function playRound(placement, currentSquare) {
     if (!victor) {
-      const placedMarker = board.playerMove(
+      board.playerMove(
         placement,
         currentPlayer.shape,
         currentPlayer.name,
         currentSquare
       );
 
-      if (placedMarker) {
-        board.displayUserInfo(
-          `${currentPlayer.name} places their marker ${currentPlayer.shape} at ${placement}`
-        );
+      victor = board.checkWinner(currentPlayer.name, roundsPlayed);
 
-        victor = board.checkWinner(currentPlayer.name, roundsPlayed);
-
-        if (!victor) {
-          roundsPlayed += 1;
-          getCurrentPlayer();
-          board.displayUserInfo(`It's ${currentPlayer.name}'s turn now!`);
-        }
+      if (!victor) {
+        roundsPlayed += 1;
+        getCurrentPlayer();
+        board.displayUserInfo(`It's ${currentPlayer.name}'s turn now!`);
       }
     }
   }
