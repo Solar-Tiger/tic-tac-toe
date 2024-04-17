@@ -4,13 +4,19 @@
   --card-border-radius: 10px;
 
   --tic-tac-toe-border-color: 2px solid black;
+
+  --tic-tac-toe-header: 55px;
+  --tic-tac-toe-footer: 1.5rem;
+  --tic-tac-toe-container: calc(
+    100vh - (var(--tic-tac-toe-header) + var(--tic-tac-toe-footer))
+  );
 }
 
 /*  
-	   ========================================================================= 
-	   =                         KEVIN POWELL CSS RESET                       =   
-	   =========================================================================  
-	   */
+		 ========================================================================= 
+		 =                         KEVIN POWELL CSS RESET                       =   
+		 =========================================================================  
+		 */
 
 /*  Source: https://www.youtube.com/shorts/2lyDv0wOQuQ */
 
@@ -29,8 +35,8 @@
 
 /* dark mode user-agent-styles */
 /* html {
-	 color-scheme: dark light;
-	  } */
+	   color-scheme: dark light;
+		} */
 
 body {
   min-height: 100vh;
@@ -44,9 +50,9 @@ html {
 
 /* responsive images/videos */
 img:not(.dashboard-icon),
-	picture,
-	/* svg, */
-	video {
+	  picture,
+	  /* svg, */
+	  video {
   display: block;
   max-width: 100%;
 }
@@ -71,18 +77,23 @@ button {
 }
 
 /*  
-	   ========================================================================= 
-	   =                             TIC TAC TOE                              =   
-	   =========================================================================  
-	   */
+		 ========================================================================= 
+		 =                             TIC TAC TOE                              =   
+		 =========================================================================  
+		 */
 
-h1 {
-  padding: 2vh 0;
-  text-align: center;
+.tic-tac-toe-header {
+  height: var(--tic-tac-toe-header);
+
+  & h1 {
+    padding-top: 10px;
+    text-align: center;
+  }
 }
 
 .tic-tac-toe-container {
   max-width: 360px;
+  height: var(--tic-tac-toe-container);
   margin-inline: auto;
   padding: 0 20px;
 }
@@ -165,9 +176,8 @@ h1 {
 
 .tic-tac-toe-footer {
   width: 100%;
+  height: var(--tic-tac-toe-footer);
   text-align: center;
-  position: absolute;
-  bottom: 5px;
 
   & span {
     text-decoration: underline;
